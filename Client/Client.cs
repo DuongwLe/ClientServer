@@ -25,7 +25,6 @@ namespace Client
             CheckForIllegalCrossThreadCalls = false;
             txbUserName.Text = Settings.Default.username;
             Connect();
-
         }
         /// <summary>
         /// Gửi tin đi
@@ -86,6 +85,7 @@ namespace Client
         {
             try
             {
+                //Connect();
                 client.Send(Serialize(txbUserName.Text + ": " + txbMessage.Text));
             }
             catch
@@ -191,10 +191,8 @@ namespace Client
                 fNameLen.CopyTo(clientData, 0);
                 fNameByte.CopyTo(clientData, 4);
                 fileData.CopyTo(clientData, 4 + fNameByte.Length);
-                //client.Send(Serialize(txbUserName.Text + " gửi file: " + fName.ToString()));
-                Connect();
-                client.Send(clientData);       
-                client.Close();
+                client.Send(Serialize(txbUserName.Text + " gửi file: " + fName.ToString()));
+                client.Send(clientData);          
             }
             catch (Exception ex)
             {
@@ -209,7 +207,6 @@ namespace Client
                 try
                 {
                     SendFile(fd.FileName);
-
                 }
                 catch(Exception ex)
                 {

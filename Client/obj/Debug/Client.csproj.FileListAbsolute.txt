@@ -9,3 +9,14 @@ D:\MultiChat-ClientServer\Client\obj\Debug\Client.exe
 D:\MultiChat-ClientServer\Client\obj\Debug\Client.pdb
 D:\MultiChat-ClientServer\Client\obj\Debug\Client.csproj.AssemblyReference.cache
 D:\MultiChat-ClientServer\Client\obj\Debug\Client.csproj.SuggestedBindingRedirects.cache
+D:\ClientServer\Client\bin\Debug\Client.exe.config
+D:\ClientServer\Client\bin\Debug\Client.exe
+D:\ClientServer\Client\bin\Debug\Client.pdb
+D:\ClientServer\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\ClientServer\Client\obj\Debug\Client.csproj.SuggestedBindingRedirects.cache
+D:\ClientServer\Client\obj\Debug\Client.Client.resources
+D:\ClientServer\Client\obj\Debug\Client.Properties.Resources.resources
+D:\ClientServer\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\ClientServer\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\ClientServer\Client\obj\Debug\Client.exe
+D:\ClientServer\Client\obj\Debug\Client.pdb

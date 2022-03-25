@@ -63,7 +63,6 @@ namespace Server
             server.Bind(IP);
             server.Listen(100);
 
-
             Thread Listen = new Thread(() =>
             {
                 try
@@ -72,16 +71,15 @@ namespace Server
                     {
                         Socket client = server.Accept();
                         clientList.Add(client);
-                        //lsbClientIP.Items.Add(client);
 
-                        Thread recieve = new Thread(Receive);
-                        recieve.IsBackground = true;
-                        recieve.Start(client);
+                        //Thread recieve = new Thread(Receive);
+                        //recieve.IsBackground = true;
+                        //recieve.Start(client);
 
-                        //new Thread(delegate ()
-                        //{
-                        //    ReceiveFile(client);
-                        //}).Start();
+                        new Thread(delegate ()
+                        {
+                            ReceiveFile(client);
+                        }).Start();
 
                     }
                 }
@@ -125,14 +123,13 @@ namespace Server
                 {
                     byte[] data = new byte[1024 * 5000];
                     int receive =  client.Receive(data);
-
                     string message = (string)Deserialize(data);
-                    foreach (Socket item in clientList)
-                    {
-                        if (item != null && item != client)
-                            item.Send(Serialize(message));
+                    //foreach (Socket item in clientList)
+                    //{
+                    //    if (item != null && item != client)
+                    //        item.Send(Serialize(message));
                        
-                    }
+                    //}
                     AddMessage(message);
                 }
             }
@@ -194,18 +191,30 @@ namespace Server
         {
             try
             {
-                byte[] clientData = new byte[1024 * 5000];
-                int receiveByteLen = socket.Receive(clientData);
-                int fNameLen = BitConverter.ToInt32(clientData, 0);
-                string fName = Encoding.ASCII.GetString(clientData, 4, fNameLen);
-                BinaryWriter write = new BinaryWriter(File.Open(path + @"\" + fName, FileMode.Create));
-                write.Write(clientData, 4 + fNameLen, receiveByteLen - 4 - fNameLen);
-                write.Close();
-                socket.Close();
+                while (true)
+                {
+                    byte[] clientData = new byte[1024 * 5000];
+                    int receiveByteLen = socket.Receive(clientData);
+                    int fNameLen = BitConverter.ToInt32(clientData, 0);
+                    if (fNameLen == 256)
+                    {
+                        string message = (string)Deserialize(clientData);
+                        AddMessage(message);
+                    }
+                    else
+                    {
+                        string fName = Encoding.ASCII.GetString(clientData, 4, fNameLen);
+                        BinaryWriter write = new BinaryWriter(File.Open(path + @"\" + fName, FileMode.Create));
+                        write.Write(clientData, 4 + fNameLen, receiveByteLen - 4 - fNameLen);
+                        AddMessage("Đã nhận 1 File: " + fName);
+                        write.Close();
+                    }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Lỗi Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clientList.Remove(socket);
+                //MessageBox.Show(ex.ToString(), "Lỗi Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 socket.Close();
             }
         }
@@ -220,11 +229,5 @@ namespace Server
             }
         }
 
-        private void btnReceive_Click(object sender, EventArgs e)
-        {
-            new Thread(delegate () {
-                ReceiveFile(client);
-            }).Start();
-        }
     }
 }
